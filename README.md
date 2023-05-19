@@ -59,8 +59,8 @@ Files including a dot will also have a Cache-Control header set to instruct brow
 - Adapted from [steebchen/nginx-spa](https://github.com/steebchen/nginx-spa)
 
 [history api]: https://developer.mozilla.org/en-US/docs/Web/API/History_API
-[latest]: https://github.com/towerism/nginx-nuxt-spa/blob/main/dockerfile
-[stable]: https://github.com/towerism/nginx-nuxt-spa/blob/stable/dockerfile
+[latest]: https://github.com/towerism/nginx-nuxt-spa/blob/main/Dockerfile
+[stable]: https://github.com/towerism/nginx-nuxt-spa/blob/stable/Dockerfile
 [base image]: https://github.com/nginxinc/docker-nginx
 [image shield]: https://img.shields.io/badge/dockerhub-martinfjr%2Fnginx--nuxt--spa-blue.svg
 [docker hub]: https://registry.hub.docker.com/r/martinfjr/nginx-nuxt-spa/
