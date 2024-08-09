@@ -15,6 +15,7 @@ server {
   # e.g. /, /user, and /foo/bar will return index.html
   location / {
     add_header Cache-Control "no-store";
+    add_header Content-Security-Policy "frame-ancestors 'self';" always;
     try_files $uri $uri/ /index.html;
   }
 
@@ -31,6 +32,7 @@ server {
 
   # handle 404 errors by serving /404/index.html
   location @404 {
+    add_header Content-Security-Policy "frame-ancestors 'self';" always;
     rewrite ^(.*)$ /404/index.html break;
   }
 }
