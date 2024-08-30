@@ -3,36 +3,39 @@ server {
 
   gzip on;
   gzip_min_length 1000;
-  gzip_types text/plain text/xml application/javascript text/css image/svg+xml;
+  gzip_types text/plain text/xml application/javascript text/css image/svg+xml application/json;
 
   server_tokens off;
   more_set_headers 'Server: Server';
 
   root /usr/share/nginx/html;
 
-  # normal routes
+  # Handle static files
+  # redirect to normal SPA routes if file does not exist
+  location ~* \.(?!html) {
+    add_header Cache-Control "public, max-age=2678400";
+    try_files $uri @spa;
+  }
+
+  # normal SPA routes
   # serve given URL and default to index.html if not found
   # e.g. /, /user, and /foo/bar will return index.html
   location / {
+    try_files "" @spa;
+  }
+  location @spa {
     add_header Cache-Control "no-store";
     add_header Content-Security-Policy "frame-ancestors 'self';" always;
-    try_files $uri $uri/ /index.html;
+    try_files $uri $uri/ /index.html =404;
   }
 
   # rewrite /${NGINX_BASE_URL} requests to the root path
   rewrite ^/${NGINX_BASE_URL}/(.*)$ /$1 break;
 
-  # files
-  # for all routes matching a dot, check for files and return 404 if not found
-  # e.g. /file.js returns a 404 if not found
-  location ~ \.(?!html) {
-    add_header Cache-Control "public, max-age=2678400";
-    try_files $uri @404;
-  }
-
   # handle 404 errors by serving /404/index.html
-  location @404 {
+  error_page 404 /404/index.html;
+  location = /404/index.html {
     add_header Content-Security-Policy "frame-ancestors 'self';" always;
-    rewrite ^(.*)$ /404/index.html break;
+    internal;
   }
 }
